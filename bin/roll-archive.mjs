@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-import { join, format, parse } from 'node:path';
+import { join, format, parse } from "node:path";
 import {
-  mkdir,
-  writeFile,
-  readFile,
-  access,
-  constants,
-} from 'node:fs/promises';
-import { parseArgs } from 'node:util';
-import { input, search, editor, confirm } from '@inquirer/prompts';
-import * as YAML from 'yaml';
-import { filmStocks, cameras, lenses } from './data.mjs';
+    mkdir,
+    writeFile,
+    readFile,
+    access,
+    constants
+} from "node:fs/promises";
+import { parseArgs } from "node:util";
+import { input, search, editor, confirm } from "@inquirer/prompts";
+import * as YAML from "yaml";
+import { filmStocks, cameras, lenses } from "./data.mjs";
 
 // process.on('uncaughtException', (error) => {
 //   if (error instanceof Error && error.name === 'ExitPromptError') {
@@ -22,44 +22,46 @@ import { filmStocks, cameras, lenses } from './data.mjs';
 //   }
 // });
 
-const chemicalsDataFile = './radata/chemicals.yaml';
+const chemicalsDataFile = "./radata/chemicals.yaml";
 
 async function checkChemicals() {
-  try {
-    await access(chemicalsDataFile, constants.R_OK);
-    return true;
-  } catch {
-    return false;
-  }
+    try {
+        await access(chemicalsDataFile, constants.R_OK);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 async function getChemicals() {
-  const hasChemicals = await checkChemicals();
-  if (hasChemicals) {
-    try {
-      const data = await readFile(chemicalsDataFile, { encoding: 'utf-8' });
-      return YAML.parse(data);
-    } catch (err) {
-      console.error('Unable read chemicals');
-      throw err;
+    const hasChemicals = await checkChemicals();
+    if (hasChemicals) {
+        try {
+            const data = await readFile(chemicalsDataFile, {
+                encoding: "utf-8"
+            });
+            return YAML.parse(data);
+        } catch (err) {
+            console.error("Unable read chemicals");
+            throw err;
+        }
     }
-  }
-  return null;
+    return null;
 }
 
 let chemicals = await getChemicals();
 console.log(chemicals);
 try {
-  const answer = await input({ message: 'What to add?' });
+    const answer = await input({ message: "What to add?" });
+    console.log("out", answer);
 } catch {
-  console.log('fun');
+    console.log("fun");
 }
 // chemicals = chemicals === null ? [] : chemicals;
 // chemicals.push(answer);
 // const out = YAML.stringify(chemicals);
-console.log('out', answer);
 
-await input({ message: 'Y' });
+await input({ message: "Y" });
 // try {
 //   await mkdir('radata');
 //   await writeFile(chemicalsDataFile, out, { flag: 'w+' });
