@@ -9,59 +9,33 @@ import {
   constants,
 } from "node:fs/promises";
 import { parseArgs } from "node:util";
-import { input, search, editor, confirm } from "@inquirer/prompts";
+import { input, search, editor, confirm, select } from "@inquirer/prompts";
 import * as YAML from "yaml";
 import { filmStocks, cameras, lenses } from "./data.mjs";
+import { presetPrompt } from "../lib/presets.mjs";
 
-// process.on('uncaughtException', (error) => {
-//   if (error instanceof Error && error.name === 'ExitPromptError') {
-//     console.log('👋 until next time!');
-//   } else {
-//     // Rethrow unknown errors
-//     throw error;
-//   }
-// });
-
-const chemicalsDataFile = "./radata/chemicals.yaml";
-
-async function checkChemicals() {
-  try {
-    await access(chemicalsDataFile, constants.R_OK);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-async function getChemicals() {
-  const hasChemicals = await checkChemicals();
-  if (hasChemicals) {
-    try {
-      const data = await readFile(chemicalsDataFile, {
-        encoding: "utf-8",
-      });
-      return YAML.parse(data);
-    } catch (err) {
-      console.error("Unable read chemicals");
-      throw err;
-    }
-  }
-  return null;
-}
-
-let chemicals = await getChemicals();
-console.log(chemicals);
 try {
-  const answer = await input({ message: "What to add?" });
-  console.log("out", answer);
-} catch {
-  console.log("fun");
+  const cmd = await select({
+    message: "Choose action",
+    choices: [
+      { name: "create roll", value: "roll" },
+      { name: "add chemical", value: "ch" },
+    ],
+  });
+  // const answer = await input({ message: "What to add?" });
+  const ar = await presetPrompt();
+  console.log("arf", ar);
+} catch (error) {
+  if (error instanceof Error && error.name === "ExitPromptError") {
+  } else {
+    // Rethrow unknown errors
+    throw error;
+  }
 }
 // chemicals = chemicals === null ? [] : chemicals;
 // chemicals.push(answer);
 // const out = YAML.stringify(chemicals);
 
-await input({ message: "Y" });
 // try {
 //   await mkdir('radata');
 //   await writeFile(chemicalsDataFile, out, { flag: 'w+' });
