@@ -18,6 +18,7 @@ import {
   firstFrame,
   lastFrame,
   location,
+  developedAt,
 } from "../lib/base-prompts.mjs";
 import { promptStruct } from "../lib/utils.mjs";
 import { presetPrompt } from "../lib/presets.mjs";
@@ -56,8 +57,14 @@ async function roll() {
     firstFrame,
     lastFrame,
     location,
-    process: presetPrompt,
+    developedAt,
   });
+
+  if (meta.developedAt === "Home") {
+    meta.process = await presetPrompt();
+  } else {
+    meta.process = null;
+  }
 
   const dst = join(
     process.cwd(),
