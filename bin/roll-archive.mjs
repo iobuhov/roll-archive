@@ -19,6 +19,7 @@ import {
   lastFrame,
   location,
   developedAt,
+  notes,
 } from "../lib/base-prompts.mjs";
 import { promptStruct } from "../lib/utils.mjs";
 import { presetPrompt } from "../lib/presets.mjs";
@@ -58,6 +59,7 @@ async function roll() {
     lastFrame,
     location,
     developedAt,
+    notes,
   });
 
   if (meta.developedAt === "Home") {
