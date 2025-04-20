@@ -20,6 +20,7 @@ import {
   location,
   developedAt,
   notes,
+  filmFormat,
 } from "../lib/base-prompts.mjs";
 import { promptStruct } from "../lib/utils.mjs";
 import { presetPrompt } from "../lib/presets.mjs";
@@ -48,6 +49,7 @@ async function roll() {
     year,
     month,
     filmStock,
+    filmFormat,
     iso,
     pullPush,
     description,
