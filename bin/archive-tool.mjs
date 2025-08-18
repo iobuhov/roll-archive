@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { input, number } from "@inquirer/prompts";
+import { input, number, select } from "@inquirer/prompts";
 import { mkdir, writeFile } from "node:fs/promises";
 import { format, join } from "node:path";
 import {
@@ -31,7 +31,6 @@ try {
   const c = await cmd();
   if (c === "proc") {
     const data = await filmProcess();
-    console.dir(data, { depth: 30 });
     await writeFile(`${data.id}.yaml`, YAML.stringify(data), { flag: "w+" });
   } else {
     await roll();
@@ -75,6 +74,10 @@ async function roll() {
         t: () => number({ message: fmsg("Temperature"), default: 38 }),
       }),
     };
+    meta.process.processor = await select({
+      message: fmsg("Processor"),
+      choices: [{ value: null, name: "None" }, { value: "AGO Film Processor" }],
+    });
   }
 
   const dst = join(
