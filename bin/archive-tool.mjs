@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { input } from "@inquirer/prompts";
+import { input, number } from "@inquirer/prompts";
 import { mkdir, writeFile } from "node:fs/promises";
 import { format, join } from "node:path";
 import {
@@ -24,14 +24,15 @@ import {
   filmFormat,
 } from "../lib/base-prompts.mjs";
 import { promptStruct, fmsg } from "../lib/utils.mjs";
-import { chemicalName, filmProcess } from "../lib/process-prompt.mjs";
+import { chemicalName, filmProcess } from "../lib/film-process-prompt.mjs";
 import * as YAML from "yaml";
 
 try {
   const c = await cmd();
   if (c === "proc") {
     const data = await filmProcess();
-    await writeFile("process.yaml", YAML.stringify(data), { flag: "w+" });
+    console.dir(data, { depth: 30 });
+    await writeFile(`${data.id}.yaml`, YAML.stringify(data), { flag: "w+" });
   } else {
     await roll();
   }
@@ -71,6 +72,7 @@ async function roll() {
         name: chemicalName,
         dilution: () => input({ message: fmsg("Dilution") }),
         time: () => input({ message: fmsg("Time") }),
+        t: () => number({ message: fmsg("Temperature"), default: 38 }),
       }),
     };
   }
@@ -81,7 +83,7 @@ async function roll() {
     meta.month,
     `${meta.rollId}.${meta.camera.join(" ")}.${meta.filmStock}`,
   );
-  const raw = join(dst, "RAW");
+  const raw = join(dst, "negatives");
   const pos = join(dst, "positives");
 
   for (const d of [dst, raw, pos]) {
