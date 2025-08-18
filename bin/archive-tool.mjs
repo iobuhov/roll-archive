@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { input } from "@inquirer/prompts";
 import { mkdir, writeFile } from "node:fs/promises";
 import { format, join } from "node:path";
 import {
@@ -22,15 +23,15 @@ import {
   notes,
   filmFormat,
 } from "../lib/base-prompts.mjs";
-import { promptStruct } from "../lib/utils.mjs";
-import { presetPrompt } from "../lib/presets.mjs";
-import { addChem } from "../lib/chem-prompts.mjs";
+import { promptStruct, fmsg } from "../lib/utils.mjs";
+import { chemicalName, filmProcess } from "../lib/process-prompt.mjs";
 import * as YAML from "yaml";
 
 try {
   const c = await cmd();
-  if (c === "ch") {
-    await addChem();
+  if (c === "proc") {
+    const data = await filmProcess();
+    await writeFile("process.yaml", YAML.stringify(data), { flag: "w+" });
   } else {
     await roll();
   }
@@ -65,9 +66,13 @@ async function roll() {
   });
 
   if (meta.developedAt === "Home") {
-    meta.process = await presetPrompt();
-  } else {
-    meta.process = null;
+    meta.process = {
+      developer: await promptStruct({
+        name: chemicalName,
+        dilution: () => input({ message: fmsg("Dilution") }),
+        time: () => input({ message: fmsg("Time") }),
+      }),
+    };
   }
 
   const dst = join(
@@ -76,10 +81,10 @@ async function roll() {
     meta.month,
     `${meta.rollId}.${meta.camera.join(" ")}.${meta.filmStock}`,
   );
-  const dslr = join(dst, "DSLR");
+  const raw = join(dst, "RAW");
   const pos = join(dst, "positives");
 
-  for (const d of [dst, dslr, pos]) {
+  for (const d of [dst, raw, pos]) {
     await mkdir(d, { recursive: true });
   }
 
