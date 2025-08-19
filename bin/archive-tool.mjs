@@ -48,7 +48,6 @@ async function roll() {
   const meta = await promptStruct({
     rollId,
     year,
-    month,
     filmStock,
     filmFormat,
     iso,
@@ -83,7 +82,6 @@ async function roll() {
   const dst = join(
     process.cwd(),
     meta.year,
-    meta.month,
     `${meta.rollId}.${meta.camera.join(" ")}.${meta.filmStock}`,
   );
   const raw = join(dst, "negatives");
