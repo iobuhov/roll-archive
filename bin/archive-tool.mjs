@@ -7,7 +7,6 @@ import {
   cmd,
   rollId,
   year,
-  month,
   filmStock,
   iso,
   exposureIndex,
@@ -23,6 +22,7 @@ import {
   notes,
   filmFormat,
   unloaded,
+  framesShot,
 } from "../lib/base-prompts.mjs";
 import { promptStruct, fmsg } from "../lib/utils.mjs";
 import { chemicalName, filmProcess } from "../lib/film-process-prompt.mjs";
@@ -51,6 +51,8 @@ async function roll() {
     year,
     filmStock,
     filmFormat,
+    exposures: () => number({ message: fmsg("Exposures"), default: 24 }),
+    framesShot,
     iso,
     exposureIndex,
     description,
@@ -59,8 +61,6 @@ async function roll() {
     developed,
     camera,
     lens,
-    firstFrame,
-    lastFrame,
     location,
     developedAt,
     notes,
