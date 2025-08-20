@@ -22,6 +22,7 @@ import {
   developedAt,
   notes,
   filmFormat,
+  unloaded,
 } from "../lib/base-prompts.mjs";
 import { promptStruct, fmsg } from "../lib/utils.mjs";
 import { chemicalName, filmProcess } from "../lib/film-process-prompt.mjs";
@@ -54,6 +55,7 @@ async function roll() {
     exposureIndex,
     description,
     loaded,
+    unloaded,
     developed,
     camera,
     lens,
