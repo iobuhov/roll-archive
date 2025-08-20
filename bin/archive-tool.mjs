@@ -15,8 +15,6 @@ import {
   developed,
   camera,
   lens,
-  firstFrame,
-  lastFrame,
   location,
   developedAt,
   notes,
