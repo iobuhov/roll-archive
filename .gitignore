@@ -1,4 +1,4 @@
 node_modules
 .roll
 output
-debug
+debug.DS_Store
