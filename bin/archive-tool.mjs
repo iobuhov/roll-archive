@@ -84,8 +84,8 @@ async function roll() {
     meta.year,
     `${meta.rollId}.${meta.camera.join(" ")}.${meta.filmStock}`,
   );
-  const raw = join(dst, "negatives");
-  const pos = join(dst, "positives");
+  const raw = join(dst, `${meta.rollId}_N_Z7`);
+  const pos = join(dst, `${meta.rollId}_P_Z7`);
 
   for (const d of [dst, raw, pos]) {
     await mkdir(d, { recursive: true });
