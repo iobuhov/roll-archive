@@ -4,6 +4,7 @@
     "Agfa",
     "Agfamatic",
     "Apotar",
+    "Bessa",
     "BLEA",
     "BLEAS",
     "BLIX",
@@ -20,6 +21,7 @@
     "Ilfotol",
     "Kentmere",
     "Konica",
+    "KONO",
     "LomoChrome",
     "Lomography",
     "Minoctar",
@@ -36,12 +38,16 @@
     "Revuetar",
     "Rodinal",
     "Rollei",
+    "Skopar",
     "Solinar",
     "Solitar",
     "Sonnar",
     "Superia",
+    "Takumar",
     "Tessar",
     "Ultramax",
+    "Voigtlander",
+    "Yashinon",
     "Zenit"
   ]
 }
