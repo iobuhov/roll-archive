@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { input, number, select } from "@inquirer/prompts";
+import { promptInput, promptNumber, promptSelect } from "../lib/prompts.mjs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { format, join } from "node:path";
 import {
@@ -49,7 +49,7 @@ async function roll() {
     year,
     filmStock,
     filmFormat,
-    exposures: () => number({ message: fmsg("Exposures"), default: 24 }),
+    exposures: () => promptNumber(fmsg("Exposures"), 24),
     framesShot,
     iso,
     exposureIndex,
@@ -68,15 +68,15 @@ async function roll() {
     meta.process = {
       developer: await promptStruct({
         name: chemicalName,
-        dilution: () => input({ message: fmsg("Dilution") }),
-        time: () => input({ message: fmsg("Time") }),
-        t: () => number({ message: fmsg("Temperature"), default: 38 }),
+        dilution: () => promptInput(fmsg("Dilution")),
+        time: () => promptInput(fmsg("Time")),
+        t: () => promptNumber(fmsg("Temperature"), 38),
       }),
     };
-    meta.process.processor = await select({
-      message: fmsg("Processor"),
-      choices: [{ value: null, name: "None" }, { value: "AGO Film Processor" }],
-    });
+    meta.process.processor = await promptSelect(fmsg("Processor"), [
+      { value: null, name: "None" },
+      { value: "AGO Film Processor" },
+    ]);
   }
 
   const dst = join(
