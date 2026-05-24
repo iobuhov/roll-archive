@@ -24,9 +24,24 @@ import {
 } from "../lib/base-prompts.mjs";
 import { promptStruct, fmsg } from "../lib/utils.mjs";
 import { chemicalName, filmProcess } from "../lib/film-process-prompt.mjs";
+import { migrateFile } from "../lib/migrate.mjs";
 import * as YAML from "yaml";
 
+const args = process.argv.slice(2);
+const migrateIdx = args.indexOf("--migrate");
+
 try {
+  if (migrateIdx !== -1) {
+    const inputPath = args[migrateIdx + 1];
+    if (!inputPath) {
+      console.error("Usage: archive-tool --migrate <path-to-v1.yaml>");
+      process.exit(1);
+    }
+    const outPath = await migrateFile(inputPath);
+    console.log(`Migrated -> ${outPath}`);
+    process.exit(0);
+  }
+
   const c = await cmd();
   if (c === "proc") {
     const data = await filmProcess();
@@ -84,10 +99,9 @@ async function roll() {
     meta.year,
     `${meta.rollId}.${meta.camera.join(" ")}.${meta.filmStock}`,
   );
-  const raw = join(dst, `${meta.rollId}_N_Z7`);
-  const pos = join(dst, `${meta.rollId}_P_Z7`);
+  const raw = join(dst, `${meta.rollId}_N_Z7_WLs`);
 
-  for (const d of [dst, raw, pos]) {
+  for (const d of [dst, raw]) {
     await mkdir(d, { recursive: true });
   }
 
