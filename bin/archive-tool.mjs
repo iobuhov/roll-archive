@@ -96,7 +96,7 @@ async function roll() {
 
   const dst = join(
     process.cwd(),
-    meta.year,
+    `${meta.year}`,
     `${meta.rollId}.${meta.camera.join(" ")}.${meta.filmStock}`,
   );
   const raw = join(dst, `${meta.rollId}_N_Z7_WLs`);
